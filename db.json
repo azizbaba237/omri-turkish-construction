@@ -1,0 +1,78 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Robinetteries",
+            "short_description": "Robinet lavabo",
+            "description": "Très bonne qualité",
+            "price": "50 000 FCFA",
+            "image": "images/robinet.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Douches et lavabos",
+            "short_description": "Robinet lavabo",
+            "description": "Très bonne qualité",
+            "price": "50 000 FCFA",
+            "image": "images/bat1.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Lampes",
+            "short_description": "Robinet lavabo",
+            "description": "Très bonne qualité",
+            "price": "50 000 FCFA",
+            "image": "images/lampe.jpg"
+        },
+        {
+            "id": 4,
+            "name": "Miroirs",
+            "short_description": "Robinet lavabo",
+            "description": "Très bonne qualité",
+            "price": "50 000 FCFA",
+            "image": "images/miroir.jpg"
+        }
+    ],
+    "services": [
+        {
+            "id": 1,
+            "name": "Installation sanitaire",
+            "description": "Installation complète de vos équipements sanitaires",
+            "price": "50 000 FCFA",
+            "image": " https://images.pexels.com/photos/3315291/pexels-photo-3315291.jpeg"
+        },
+        {
+            "id": 2,
+            "name": "Menuserie metalique",
+            "description": "Installation complète de vos équipements Metalique",
+            "price": "50 000 FCFA",
+            "image": "images/vitre1.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Suivi de chantier",
+            "description": "Suivi de vos chantiers par un professionnel",
+            "price": "50 000 FCFA",
+            "image": "images/construction1.jpg"
+        },
+        {
+            "id": 4,
+            "name": "Fabriccation de baie vitree",
+            "description": "Suivi de vos chantiers par un professionnel",
+            "price": "50 000 FCFA",
+            "image": "images/construction-site-silouette.jpg"
+        }
+    ],
+    "testimonials": [
+        {
+            "name": "Client Satisfait",
+            "text": "Service impeccable et produits de qualité supérieure",
+            "rating": 5
+        },
+        {
+            "name": "Entreprise XYZ",
+            "text": "Partenaire fiable pour nos besoins en sanitaires",
+            "rating": 4
+        }
+    ]
+}
