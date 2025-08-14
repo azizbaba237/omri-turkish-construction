@@ -26,22 +26,31 @@ const Home = () => {
   const [testimonials, setTestimonials] = useState([]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/products`).then(res => setProducts(res.data));
-    axios.get(`${import.meta.env.VITE_API_URL}/services`).then(res => setServices(res.data));
-    axios.get(`${import.meta.env.VITE_API_URL}/testimonials`).then(res => setTestimonials(res.data));
+    axios
+      .get("/db.json")
+      .then((res) => {
+        setProducts(res.data.products);
+        setServices(res.data.services);
+        setTestimonials(res.data.testimonials);
+      })
+      .catch((err) => console.error("Erreur API:", err));
   }, []);
 
   // ================= Carrousel Témoignages =================
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
-  const nextTestimonial = () => setCurrentTestimonial((currentTestimonial + 1) % testimonials.length);
-  const prevTestimonial = () => setCurrentTestimonial((currentTestimonial - 1 + testimonials.length) % testimonials.length);
+  const nextTestimonial = () =>
+    setCurrentTestimonial((currentTestimonial + 1) % testimonials.length);
+  const prevTestimonial = () =>
+    setCurrentTestimonial(
+      (currentTestimonial - 1 + testimonials.length) % testimonials.length
+    );
 
   return (
     <>
@@ -61,19 +70,49 @@ const Home = () => {
           color: "white",
         }}
       >
-        <Box sx={{ position: "absolute", inset: 0, backgroundColor: "rgba(0,0,0,0.5)" }} />
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        />
         <Container maxWidth="md" sx={{ position: "relative", zIndex: 2 }}>
-          <Typography variant="h3" fontWeight="bold" gutterBottom className="uppercase drop-shadow-lg">
+          <Typography
+            variant="h3"
+            fontWeight="bold"
+            gutterBottom
+            className="uppercase drop-shadow-lg"
+          >
             Bienvenue chez Omri Turkish Construction
           </Typography>
           <Typography variant="h6" mb={3}>
             Vente de produits sanitaires et prestations professionnelles
           </Typography>
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", flexWrap: "wrap" }}>
-            <Button variant="contained" size="large" component={Link} to="/products" sx={{ bgcolor: "#1E40AF" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Button
+              variant="contained"
+              size="large"
+              component={Link}
+              to="/products"
+              sx={{ bgcolor: "#1E40AF" }}
+            >
               Voir nos produits
             </Button>
-            <Button variant="contained" size="large" component={Link} to="/services" sx={{ bgcolor: "#f29200" }}>
+            <Button
+              variant="contained"
+              size="large"
+              component={Link}
+              to="/services"
+              sx={{ bgcolor: "#f29200" }}
+            >
               Découvrir nos services
             </Button>
           </Box>
@@ -81,7 +120,14 @@ const Home = () => {
       </Box>
 
       {/* Promo Banner */}
-      <Box sx={{ backgroundColor: "#f29200", color: "#000", py: 2, textAlign: "center" }}>
+      <Box
+        sx={{
+          backgroundColor: "#f29200",
+          color: "#000",
+          py: 2,
+          textAlign: "center",
+        }}
+      >
         <Typography variant="h6" fontWeight="bold">
           <LocalOfferIcon sx={{ verticalAlign: "middle", mr: 1 }} />
           LIVRAISON OFFERTE À PARTIR DE XXX Fcfa | PROMOTIONS EN COURS
@@ -90,21 +136,54 @@ const Home = () => {
 
       <Container maxWidth="lg" sx={{ py: 6 }}>
         {/* Produits */}
-        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 4, textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          gutterBottom
+          sx={{ mb: 4, textAlign: "center" }}
+        >
           Nos Produits Phares
         </Typography>
         <Grid container spacing={3} justifyContent="center">
-          {products.slice(0, 8).map(product => (
+          {products.slice(0, 8).map((product) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-              <Card className="transition-transform transform hover:scale-105 shadow-lg hover:shadow-2xl" sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                <CardMedia component="img" sx={{ height: 220, objectFit: "cover" }} image={product.image} alt={product.name} />
+              <Card
+                className="transition-transform transform hover:scale-105 shadow-lg hover:shadow-2xl"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{ height: 220, objectFit: "cover" }}
+                  image={product.image}
+                  alt={product.name}
+                />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h6">{product.name}</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{product.short_description}</Typography>
-                  <Typography variant="h6" color="primary" fontWeight="bold">{product.price} Fcfa</Typography>
+                  <Typography gutterBottom variant="h6">
+                    {product.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1 }}
+                  >
+                    {product.short_description}
+                  </Typography>
+                  <Typography variant="h6" color="primary" fontWeight="bold">
+                    {product.price} Fcfa
+                  </Typography>
                 </CardContent>
                 <Box sx={{ p: 2 }}>
-                  <Button variant="contained" fullWidth endIcon={<ArrowForwardIcon />} component={Link} to={`/products/${product.id}`}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    endIcon={<ArrowForwardIcon />}
+                    component={Link}
+                    to={`/products/${product.id}`}
+                  >
                     Voir le produit
                   </Button>
                 </Box>
@@ -115,21 +194,57 @@ const Home = () => {
 
         {/* Services */}
         <Box sx={{ backgroundColor: "#f5f5f5", p: 5, borderRadius: 2, mt: 8 }}>
-          <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 4, textAlign: "center" }}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ mb: 4, textAlign: "center" }}
+          >
             Nos Prestations de Services
           </Typography>
           <Grid container spacing={4} justifyContent="center">
-            {services.slice(0, 6).map(service => (
+            {services.slice(0, 6).map((service) => (
               <Grid item xs={12} sm={6} md={4} key={service.id}>
-                <Card className="hover:shadow-xl transition-shadow" sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                  {service.image && <CardMedia component="img" sx={{ height: 200, objectFit: "cover" }} image={service.image} alt={service.name} />}
+                <Card
+                  className="hover:shadow-xl transition-shadow"
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {service.image && (
+                    <CardMedia
+                      component="img"
+                      sx={{ height: 200, objectFit: "cover" }}
+                      image={service.image}
+                      alt={service.name}
+                    />
+                  )}
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" gutterBottom>{service.name}</Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{service.description}</Typography>
-                    {service.price && <Typography variant="h6" color="primary">À partir de {service.price}</Typography>}
+                    <Typography variant="h6" gutterBottom>
+                      {service.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2 }}
+                    >
+                      {service.description}
+                    </Typography>
+                    {service.price && (
+                      <Typography variant="h6" color="primary">
+                        À partir de {service.price}
+                      </Typography>
+                    )}
                   </CardContent>
                   <Box sx={{ p: 2 }}>
-                    <Button variant="outlined" fullWidth component={Link} to={`/services/${service.id}`}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      component={Link}
+                      to={`/services/${service.id}`}
+                    >
                       En savoir plus
                     </Button>
                   </Box>
@@ -138,14 +253,23 @@ const Home = () => {
             ))}
           </Grid>
           <Box sx={{ textAlign: "center", mt: 4 }}>
-            <Button variant="contained" size="large" component={Link} to="/services">
+            <Button
+              variant="contained"
+              size="large"
+              component={Link}
+              to="/services"
+            >
               Voir tous nos services
             </Button>
           </Box>
         </Box>
 
         {/* Témoignages - Carrousel */}
-        <Typography variant="h4" fontWeight="bold" sx={{ mt: 8, mb: 4, textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          sx={{ mt: 8, mb: 4, textAlign: "center" }}
+        >
           Ils nous font confiance
         </Typography>
 
@@ -153,14 +277,18 @@ const Home = () => {
           <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", mb: 8 }}>
             <Card sx={{ p: 4, textAlign: "center", boxShadow: 6 }}>
               <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <StarIcon key={i} color="primary" />
-                ))}
+                {[...Array(testimonials[currentTestimonial].rating)].map(
+                  (_, i) => (
+                    <StarIcon key={i} color="primary" />
+                  )
+                )}
               </Box>
               <Typography variant="body1" sx={{ fontStyle: "italic", mb: 2 }}>
                 "{testimonials[currentTestimonial].text}"
               </Typography>
-              <Typography fontWeight="bold">- {testimonials[currentTestimonial].name}</Typography>
+              <Typography fontWeight="bold">
+                - {testimonials[currentTestimonial].name}
+              </Typography>
             </Card>
 
             {/* Flèches navigation */}
@@ -198,18 +326,30 @@ const Home = () => {
       <Box sx={{ backgroundColor: "#1E40AF", color: "white", p: 5, mt: 8 }}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom>Restez informé</Typography>
-            <Typography>Abonnez-vous à notre newsletter pour recevoir nos offres exclusives et actualités.</Typography>
+            <Typography variant="h4" fontWeight="bold" gutterBottom>
+              Restez informé
+            </Typography>
+            <Typography>
+              Abonnez-vous à notre newsletter pour recevoir nos offres
+              exclusives et actualités.
+            </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box component="form" sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+            <Box
+              component="form"
+              sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+            >
               <TextField
                 fullWidth
                 variant="outlined"
                 placeholder="Votre email"
                 sx={{ backgroundColor: "white", borderRadius: 1 }}
               />
-              <Button variant="contained" color="secondary" endIcon={<EmailIcon />}>
+              <Button
+                variant="contained"
+                color="secondary"
+                endIcon={<EmailIcon />}
+              >
                 S'abonner
               </Button>
             </Box>
