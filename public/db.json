@@ -10,7 +10,7 @@
         },
         {
             "id": 2,
-            "name": "Douches et lavabos",
+            "name": "Douches ",
             "short_description": "Robinet lavabo",
             "description": "Très bonne qualité",
             "price": "50 000 FCFA",
@@ -18,11 +18,11 @@
         },
         {
             "id": 3,
-            "name": "Lampes",
+            "name": "Lavabos",
             "short_description": "Robinet lavabo",
             "description": "Très bonne qualité",
             "price": "50 000 FCFA",
-            "image": "images/lampe.jpg"
+            "image": "images/photo3.jpg"
         },
         {
             "id": 4,
@@ -36,10 +36,10 @@
     "services": [
         {
             "id": 1,
-            "name": "Installation sanitaire",
+            "name": "Fabriccation de baie vitree",
             "description": "Installation complète de vos équipements sanitaires",
             "price": "50 000 FCFA",
-            "image": " https://images.pexels.com/photos/3315291/pexels-photo-3315291.jpeg"
+            "image": "images/photo5.jpg"
         },
         {
             "id": 2,
@@ -54,13 +54,6 @@
             "description": "Suivi de vos chantiers par un professionnel",
             "price": "50 000 FCFA",
             "image": "images/construction1.jpg"
-        },
-        {
-            "id": 4,
-            "name": "Fabriccation de baie vitree",
-            "description": "Suivi de vos chantiers par un professionnel",
-            "price": "50 000 FCFA",
-            "image": "images/construction-site-silouette.jpg"
         }
     ],
     "testimonials": [

@@ -79,7 +79,7 @@ const Home = () => {
         />
         <Container maxWidth="md" sx={{ position: "relative", zIndex: 2 }}>
           <Typography
-            variant="h3"
+            variant="h4"
             fontWeight="bold"
             gutterBottom
             className="uppercase drop-shadow-lg"
@@ -130,17 +130,21 @@ const Home = () => {
       >
         <Typography variant="h6" fontWeight="bold">
           <LocalOfferIcon sx={{ verticalAlign: "middle", mr: 1 }} />
-          LIVRAISON OFFERTE À PARTIR DE XXX Fcfa | PROMOTIONS EN COURS
+          NB: NOS PRODUITS BENEFICIENT D'UNE GARENTIE D'UN AN
         </Typography>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        {/* Produits */}
+      {/* Products Section */}
+      <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 } }}>
         <Typography
           variant="h4"
           fontWeight="bold"
           gutterBottom
-          sx={{ mb: 4, textAlign: "center" }}
+          sx={{
+            mb: 4,
+            textAlign: "center",
+            fontSize: { xs: "1.8rem", sm: "2rem" },
+          }}
         >
           Nos Produits Phares
         </Typography>
@@ -153,32 +157,70 @@ const Home = () => {
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
+                  maxWidth: 350, // ✅ limite la largeur max par carte
+                  margin: "auto", // centre la carte
                 }}
               >
-                <CardMedia
-                  component="img"
-                  sx={{ height: 220, objectFit: "cover" }}
-                  image={product.image}
-                  alt={product.name}
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h6">
+                {/* Image avec ratio fixe */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    pt: "75%" /* = 4/3 ratio */,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={product.image}
+                    alt={product.name}
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover", // ✅ garde la bonne proportion
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
+                    }}
+                  />
+                </Box>
+
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    px: { xs: 2, sm: 3 },
+                    py: { xs: 2, sm: 3 },
+                  }}
+                >
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+                  >
                     {product.name}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ mb: 1 }}
+                    sx={{ mb: 1, fontSize: { xs: "0.9rem", sm: "1rem" } }}
                   >
                     {product.short_description}
                   </Typography>
-                  <Typography variant="h6" color="primary" fontWeight="bold">
+                  <Typography
+                    variant="h6"
+                    color="primary"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "1.1rem", sm: "1.2rem" } }}
+                  >
                     {product.price} Fcfa
                   </Typography>
                 </CardContent>
+
                 <Box sx={{ p: 2 }}>
                   <Button
                     variant="contained"
+                    size="large"
                     fullWidth
                     endIcon={<ArrowForwardIcon />}
                     component={Link}
@@ -193,34 +235,63 @@ const Home = () => {
         </Grid>
 
         {/* Services */}
-        <Box sx={{ backgroundColor: "#f5f5f5", p: 5, borderRadius: 2, mt: 8 }}>
+        <Box
+          sx={{
+            backgroundColor: "#f5f5f5",
+            p: { xs: 3, sm: 5 },
+            borderRadius: 2,
+            mt: 8,
+          }}
+        >
           <Typography
             variant="h4"
             fontWeight="bold"
             gutterBottom
-            sx={{ mb: 4, textAlign: "center" }}
+            sx={{
+              mb: 4,
+              textAlign: "center",
+              fontSize: { xs: "1.5rem", sm: "2rem" },
+            }}
           >
             Nos Prestations de Services
           </Typography>
-          <Grid container spacing={4} justifyContent="center">
+
+          <Grid container spacing={3} justifyContent="center">
             {services.slice(0, 6).map((service) => (
-              <Grid item xs={12} sm={6} md={4} key={service.id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
                 <Card
                   className="hover:shadow-xl transition-shadow"
                   sx={{
-                    height: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    height: "100%",
+                    maxWidth: 350, // ✅ limite largeur max
+                    margin: "auto", // ✅ centre les cartes
                   }}
                 >
+                  {/* Image avec ratio fixe */}
                   {service.image && (
-                    <CardMedia
-                      component="img"
-                      sx={{ height: 200, objectFit: "cover" }}
-                      image={service.image}
-                      alt={service.name}
-                    />
+                    <Box
+                      sx={{ position: "relative", width: "100%", pt: "70%" }}
+                    >
+                      <CardMedia
+                        component="img"
+                        image={service.image}
+                        alt={service.name}
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover", // ✅ garde proportions
+                          borderTopLeftRadius: "4px",
+                          borderTopRightRadius: "4px",
+                        }}
+                      />
+                    </Box>
                   )}
+
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography variant="h6" gutterBottom>
                       {service.name}
@@ -238,6 +309,7 @@ const Home = () => {
                       </Typography>
                     )}
                   </CardContent>
+
                   <Box sx={{ p: 2 }}>
                     <Button
                       variant="outlined"
@@ -252,6 +324,7 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
+
           <Box sx={{ textAlign: "center", mt: 4 }}>
             <Button
               variant="contained"
@@ -264,18 +337,25 @@ const Home = () => {
           </Box>
         </Box>
 
-        {/* Témoignages - Carrousel */}
+        {/* Témoignages */}
         <Typography
           variant="h4"
           fontWeight="bold"
-          sx={{ mt: 8, mb: 4, textAlign: "center" }}
+          sx={{
+            mt: 8,
+            mb: 4,
+            textAlign: "center",
+            fontSize: { xs: "1.5rem", sm: "2rem" },
+          }}
         >
           Ils nous font confiance
         </Typography>
 
         {testimonials.length > 0 && (
-          <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", mb: 8 }}>
-            <Card sx={{ p: 4, textAlign: "center", boxShadow: 6 }}>
+          <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", px: 2 }}>
+            <Card
+              sx={{ p: { xs: 3, sm: 4 }, textAlign: "center", boxShadow: 6 }}
+            >
               <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
                 {[...Array(testimonials[currentTestimonial].rating)].map(
                   (_, i) => (
@@ -297,7 +377,7 @@ const Home = () => {
               sx={{
                 position: "absolute",
                 top: "50%",
-                left: -40,
+                left: { xs: 0, sm: -40 },
                 transform: "translateY(-50%)",
                 bgcolor: "white",
                 "&:hover": { bgcolor: "#f0f0f0" },
@@ -310,7 +390,7 @@ const Home = () => {
               sx={{
                 position: "absolute",
                 top: "50%",
-                right: -40,
+                right: { xs: 0, sm: -40 },
                 transform: "translateY(-50%)",
                 bgcolor: "white",
                 "&:hover": { bgcolor: "#f0f0f0" },
@@ -323,7 +403,7 @@ const Home = () => {
       </Container>
 
       {/* Newsletter */}
-      <Box sx={{ backgroundColor: "#1E40AF", color: "white", p: 5, mt: 8 }}>
+      <Box sx={{ backgroundColor: "#1E40AF", color: "white", p: 5, mt: 8, borderRadius: 2 }}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4" fontWeight="bold" gutterBottom>

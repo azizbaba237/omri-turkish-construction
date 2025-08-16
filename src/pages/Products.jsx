@@ -7,10 +7,9 @@ export default function Products() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/products`)
+      .get('db.json')
       .then((res) => {
-        console.log("Produits reçus:", res.data); // debug
-        setProducts(res.data);
+        setProducts(res.data.products);
       })
       .catch((err) => console.error("Erreur API:", err));
   }, []);
