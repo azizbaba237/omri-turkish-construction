@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,10 +20,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(2);
+  const { cartCount } = useContext(CartContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [elevated, setElevated] = useState(false);
@@ -81,8 +82,8 @@ const Navbar = () => {
         position="sticky"
         elevation={elevated ? 8 : 0}
         sx={{
-          backgroundColor: "#1E40AF", // Couleur semi-transparente
-          backdropFilter: "blur(10px)", // Effet blur moderne
+          backgroundColor: "#1E40AF",
+          backdropFilter: "blur(10px)",
           transition: "all 0.3s ease",
           zIndex: 1100,
         }}
@@ -151,18 +152,15 @@ const Navbar = () => {
               </Button>
             ))}
 
-            {/* Panier */}
-            <IconButton color="inherit" component={Link} to="/cart">
-              <Badge badgeContent={cartCount} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-
             {/* Profil */}
             <IconButton color="inherit" onClick={handleMenu}>
               <AccountCircle />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
               <MenuItem component={Link} to="/profile" onClick={handleClose}>
                 Mon profil
               </MenuItem>
@@ -173,15 +171,30 @@ const Navbar = () => {
             </Menu>
           </Box>
 
-          {/* Menu mobile */}
-          <IconButton
-            color="inherit"
-            edge="end"
-            sx={{ display: { xs: "block", md: "none" } }}
-            onClick={handleDrawerToggle}
-          >
-            <MenuIcon />
-          </IconButton>
+          {/* Panier + Menu mobile */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* Panier visible sur tous les écrans */}
+            <IconButton
+              color="inherit"
+              component={Link}
+              to="/cart"
+              sx={{ display: "block" }}
+            >
+              <Badge id="cart-badge" badgeContent={cartCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+
+            {/* Menu mobile */}
+            <IconButton
+              color="inherit"
+              edge="end"
+              sx={{ display: { xs: "block", md: "none" } }}
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
 

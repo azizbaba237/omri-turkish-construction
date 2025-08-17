@@ -1,71 +1,83 @@
 {
-    "products": [
-        {
-            "id": 1,
-            "name": "Robinetteries",
-            "short_description": "Robinet lavabo",
-            "description": "Très bonne qualité",
-            "price": "50 000 FCFA",
-            "image": "images/robinet.jpg"
-        },
-        {
-            "id": 2,
-            "name": "Douches ",
-            "short_description": "Robinet lavabo",
-            "description": "Très bonne qualité",
-            "price": "50 000 FCFA",
-            "image": "images/bat1.jpg"
-        },
-        {
-            "id": 3,
-            "name": "Lavabos",
-            "short_description": "Robinet lavabo",
-            "description": "Très bonne qualité",
-            "price": "50 000 FCFA",
-            "image": "images/photo3.jpg"
-        },
-        {
-            "id": 4,
-            "name": "Miroirs",
-            "short_description": "Robinet lavabo",
-            "description": "Très bonne qualité",
-            "price": "50 000 FCFA",
-            "image": "images/miroir.jpg"
-        }
-    ],
-    "services": [
-        {
-            "id": 1,
-            "name": "Fabriccation de baie vitree",
-            "description": "Installation complète de vos équipements sanitaires",
-            "price": "50 000 FCFA",
-            "image": "images/photo5.jpg"
-        },
-        {
-            "id": 2,
-            "name": "Menuserie metalique",
-            "description": "Installation complète de vos équipements Metalique",
-            "price": "50 000 FCFA",
-            "image": "images/vitre1.jpg"
-        },
-        {
-            "id": 3,
-            "name": "Suivi de chantier",
-            "description": "Suivi de vos chantiers par un professionnel",
-            "price": "50 000 FCFA",
-            "image": "images/construction1.jpg"
-        }
-    ],
-    "testimonials": [
-        {
-            "name": "Client Satisfait",
-            "text": "Service impeccable et produits de qualité supérieure",
-            "rating": 5
-        },
-        {
-            "name": "Entreprise XYZ",
-            "text": "Partenaire fiable pour nos besoins en sanitaires",
-            "rating": 4
-        }
-    ]
+  "products": [
+    {
+      "id": 1,
+      "name": "Robinetteries",
+      "category": "robinetterie",
+      "short_description": "Robinet lavabo",
+      "description": "Robinet de haute qualité avec finition moderne et durable.",
+      "price": "50 000 FCFA",
+      "image": "/images/robinet.jpg",
+      "colors": ["Rouge", "Noir", "Bleu"],
+      "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+      "id": 2,
+      "name": "Douches",
+      "category": "douche",
+      "short_description": "Colonne de douche moderne",
+      "description": "Colonne de douche design avec jets multiples.",
+      "price": "120 000 FCFA",
+      "image": "/images/bat1.jpg",
+      "colors": ["Rouge", "Noir", "Bleu"],
+      "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+      "id": 3,
+      "name": "Lavabos",
+      "category": "lavabo",
+      "short_description": "Lavabo en céramique",
+      "description": "Lavabo élégant et facile à entretenir.",
+      "price": "80 000 FCFA",
+      "image": "/images/photo3.jpg",
+      "colors": ["Rouge", "Noir", "Bleu"],
+      "sizes": ["S", "M", "L", "XL"]
+    },
+    {
+      "id": 4,
+      "name": "Miroirs",
+      "category": "miroir",
+      "short_description": "Miroir mural",
+      "description": "Miroir avec cadre en aluminium pour salle de bain.",
+      "price": "40 000 FCFA",
+      "image": "/images/miroir.jpg",
+      "colors": ["Rouge", "Noir", "Bleu"],
+      "sizes": ["S", "M", "L", "XL"]
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Fabrication de baie vitrée",
+      "description": "Conception et installation de baies vitrées modernes et résistantes.",
+      "price": "Sur devis",
+      "image": "/images/photo5.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Menuiserie métallique",
+      "description": "Fabrication sur mesure et installation d’équipements métalliques.",
+      "price": "Sur devis",
+      "image": "/images/vitre1.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Suivi de chantier",
+      "description": "Accompagnement et suivi rigoureux de vos projets de construction.",
+      "price": "Sur devis",
+      "image": "/images/construction1.jpg"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Client Satisfait",
+      "text": "Service impeccable et produits de qualité supérieure.",
+      "rating": 5
+    },
+    {
+      "name": "Entreprise XYZ",
+      "text": "Partenaire fiable pour nos besoins en sanitaires.",
+      "rating": 4
+    }
+  ]
 }
