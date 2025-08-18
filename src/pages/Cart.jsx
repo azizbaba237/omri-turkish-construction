@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { Link } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -128,6 +129,8 @@ const Cart = () => {
               variant="contained"
               color="primary"
               fullWidth
+              component={Link}
+              to="/order"
               className="mb-2 transition-transform hover:scale-105"
             >
               Passer la commande
