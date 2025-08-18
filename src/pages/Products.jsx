@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import axios from "axios";
-import { Box, TextField, MenuItem, Typography, Grid } from "@mui/material";
+import { Box, TextField, MenuItem, Typography, Grid, Skeleton } from "@mui/material";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("name");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get("/db.json")
-      .then((res) => setProducts(res.data.products))
-      .catch((err) => console.error("Erreur API:", err));
+      .then((res) => {
+        setProducts(res.data.products);
+      })
+      .catch((err) => console.error("Erreur API:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredProducts = products
@@ -95,18 +99,25 @@ export default function Products() {
       </Box>
 
       {/* Liste produits */}
-      {filteredProducts.length > 0 ? (
+      {loading ? (
+        <Grid container spacing={4}>
+          {[...Array(8)].map((_, i) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+              <Skeleton
+                variant="rectangular"
+                height={250}
+                sx={{ borderRadius: 2 }}
+                animation="wave"
+              />
+              <Skeleton variant="text" sx={{ mt: 1 }} animation="wave" />
+              <Skeleton variant="text" width="60%" animation="wave" />
+            </Grid>
+          ))}
+        </Grid>
+      ) : filteredProducts.length > 0 ? (
         <Grid container spacing={4}>
           {filteredProducts.map((p) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              key={p.id}
-              sx={{ display: "flex" }}
-            >
+            <Grid item xs={12} sm={6} md={4} lg={3} key={p.id} sx={{ display: "flex" }}>
               <ProductCard product={p} sx={{ flex: 1 }} />
             </Grid>
           ))}
