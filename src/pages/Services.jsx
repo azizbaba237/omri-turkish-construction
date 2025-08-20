@@ -34,11 +34,7 @@ const Services = () => {
         Nos Services
       </Typography>
 
-      <Grid
-        container
-        spacing={4}
-        justifyContent="center"
-      >
+      <Grid container spacing={4} justifyContent="center">
         {services.map((service) => (
           <Grid
             item
