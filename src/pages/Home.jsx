@@ -237,11 +237,11 @@ const Home = () => {
               : services.slice(0, 6).map((service) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
                     <Card sx={{ display: "flex", flexDirection: "column", height: "100%", maxWidth: 350, margin: "auto" }}>
-                      {service.image && (
+                      {service.images && (
                         <Box sx={{ position: "relative", width: "100%", pt: "70%" }}>
                           <CardMedia
                             component="img"
-                            image={service.image}
+                            image={service.images[0]}
                             alt={service.name}
                             sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", borderTopLeftRadius: "4px", borderTopRightRadius: "4px" }}
                           />
