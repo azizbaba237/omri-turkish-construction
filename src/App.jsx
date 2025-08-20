@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
+import ServiceDetail from "./pages/ServiceDetail";
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

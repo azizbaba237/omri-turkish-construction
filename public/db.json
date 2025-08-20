@@ -8,8 +8,17 @@
       "description": "Robinet de haute qualité avec finition moderne et durable.",
       "price": "50 000 FCFA",
       "image": "/images/robinet.jpg",
-      "colors": ["Rouge", "Noir", "Bleu"],
-      "sizes": ["S", "M", "L", "XL"]
+      "colors": [
+        "Rouge",
+        "Noir",
+        "Bleu"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
     },
     {
       "id": 2,
@@ -19,8 +28,17 @@
       "description": "Colonne de douche design avec jets multiples.",
       "price": "120 000 FCFA",
       "image": "/images/bat1.jpg",
-      "colors": ["Rouge", "Noir", "Bleu"],
-      "sizes": ["S", "M", "L", "XL"]
+      "colors": [
+        "Rouge",
+        "Noir",
+        "Bleu"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
     },
     {
       "id": 3,
@@ -30,8 +48,17 @@
       "description": "Lavabo élégant et facile à entretenir.",
       "price": "80 000 FCFA",
       "image": "/images/photo3.jpg",
-      "colors": ["Rouge", "Noir", "Bleu"],
-      "sizes": ["S", "M", "L", "XL"]
+      "colors": [
+        "Rouge",
+        "Noir",
+        "Bleu"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
     },
     {
       "id": 4,
@@ -41,31 +68,72 @@
       "description": "Miroir avec cadre en aluminium pour salle de bain.",
       "price": "40 000 FCFA",
       "image": "/images/miroir.jpg",
-      "colors": ["Rouge", "Noir", "Bleu"],
-      "sizes": ["S", "M", "L", "XL"]
+      "colors": [
+        "Rouge",
+        "Noir",
+        "Bleu"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
     }
   ],
   "services": [
     {
       "id": 1,
       "name": "Fabrication de baie vitrée",
-      "description": "Conception et installation de baies vitrées modernes et résistantes.",
+      "description": "Conception et installation de baies vitrées modernes, résistantes et adaptées à vos besoins.",
       "price": "Sur devis",
-      "image": "/images/photo5.jpg"
+      "category": "Menuiserie Aluminium",
+      "images": [
+        "/images/photo5.jpg",
+        "/images/photo5.jpg",
+        "/images/photo5.jpg"
+      ],
+      "features": [
+        "Matériaux de haute qualité",
+        "Installation rapide",
+        "Résistance aux intempéries",
+        "Design moderne"
+      ]
     },
     {
       "id": 2,
       "name": "Menuiserie métallique",
-      "description": "Fabrication sur mesure et installation d’équipements métalliques.",
+      "description": "Fabrication sur mesure et installation d’équipements métalliques robustes et esthétiques.",
       "price": "Sur devis",
-      "image": "/images/vitre1.jpg"
+      "category": "Menuiserie Métallique",
+      "images": [
+        "/images/vitre1.jpg",
+        "/images/vitre1.jpg",
+        "/images/vitre1.jpg"
+      ],
+      "features": [
+        "Acier galvanisé ou inoxydable",
+        "Soudure de précision",
+        "Conception sur mesure",
+        "Finitions soignées"
+      ]
     },
     {
       "id": 3,
       "name": "Suivi de chantier",
-      "description": "Accompagnement et suivi rigoureux de vos projets de construction.",
+      "description": "Accompagnement et suivi rigoureux de vos projets de construction pour garantir la qualité et les délais.",
       "price": "Sur devis",
-      "image": "/images/construction1.jpg"
+      "category": "Gestion de projet",
+      "images": [
+        "/images/construction1.jpg",
+        "/images/construction1.jpg"
+      ],
+      "features": [
+        "Supervision complète",
+        "Respect des délais",
+        "Rapports réguliers",
+        "Coordination des équipes"
+      ]
     }
   ],
   "testimonials": [
