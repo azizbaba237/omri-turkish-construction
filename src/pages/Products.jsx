@@ -1,31 +1,48 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import axios from "axios";
-import { Box, TextField, MenuItem, Typography, Grid, Skeleton } from "@mui/material";
+import { getProducts, getCategories } from "../services/api";
+import {
+  Box,
+  TextField,
+  MenuItem,
+  Typography,
+  Skeleton,
+  Fade,
+  Zoom,
+} from "@mui/material";
+import { motion } from "framer-motion";
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("name");
   const [loading, setLoading] = useState(true);
 
+  // Récupération produits + catégories
   useEffect(() => {
-    axios
-      .get("/db.json")
-      .then((res) => {
-        setProducts(res.data.products);
+    setLoading(true);
+    Promise.all([getProducts(), getCategories()])
+      .then(([productsRes, categoriesRes]) => {
+        setProducts(productsRes.data.results || productsRes.data || []);
+        setCategories(categoriesRes.data.results || categoriesRes.data || []);
       })
-      .catch((err) => console.error("Erreur API:", err))
+      .catch((err) => console.error("Erreur chargement :", err))
       .finally(() => setLoading(false));
   }, []);
 
+  // Filtrage et tri
   const filteredProducts = products
-    .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-    .filter((p) => (filter === "all" ? true : p.category === filter))
+    .filter((p) => p.name?.toLowerCase().includes(search.toLowerCase()))
+    .filter((p) => {
+      if (filter === "all") return true;
+      return String(p.category?.id) === String(filter);
+    })
     .sort((a, b) => {
-      const priceA = parseInt(a.price.replace(/\s|FCFA/g, ""));
-      const priceB = parseInt(b.price.replace(/\s|FCFA/g, ""));
+      const priceA = parseFloat(a.price) || 0;
+      const priceB = parseFloat(b.price) || 0;
       if (sort === "price-asc") return priceA - priceB;
       if (sort === "price-desc") return priceB - priceA;
       if (sort === "name") return a.name.localeCompare(b.name);
@@ -35,97 +52,186 @@ export default function Products() {
   return (
     <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
       {/* Titre */}
-      <Typography variant="h3" align="center" fontWeight="bold" gutterBottom>
-        Nos Produits
-      </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="text.secondary"
-        gutterBottom
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        Découvrez notre sélection de produits sanitaires de qualité.
-      </Typography>
+        <Typography variant="h3" align="center" fontWeight="bold" gutterBottom>
+          Nos Produits
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="text.secondary"
+          gutterBottom
+        >
+          Découvrez notre sélection de produits sanitaires de qualité.
+        </Typography>
+      </motion.div>
 
       {/* Barre recherche + filtres */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 2,
-          my: 4,
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <TextField
-          label="Rechercher un produit"
-          variant="outlined"
-          size="small"
-          fullWidth
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <TextField
-          select
-          label="Catégorie"
-          variant="outlined"
-          size="small"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          sx={{ minWidth: 180 }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+            my: 4,
+          }}
         >
-          <MenuItem value="all">Toutes les catégories</MenuItem>
-          <MenuItem value="robinetterie">Robinetterie</MenuItem>
-          <MenuItem value="lavabo">Lavabos</MenuItem>
-          <MenuItem value="douche">Colonnes de douche</MenuItem>
-          <MenuItem value="miroir">Miroirs</MenuItem>
-        </TextField>
+          <TextField
+            label="Rechercher un produit"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ maxWidth: 400 }}
+          />
 
-        <TextField
-          select
-          label="Trier par"
-          variant="outlined"
-          size="small"
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          sx={{ minWidth: 180 }}
-        >
-          <MenuItem value="name">Nom</MenuItem>
-          <MenuItem value="price-asc">Prix croissant</MenuItem>
-          <MenuItem value="price-desc">Prix décroissant</MenuItem>
-        </TextField>
-      </Box>
+          <TextField
+            select
+            label="Catégorie"
+            variant="outlined"
+            size="small"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            sx={{ minWidth: 200 }}
+          >
+            <MenuItem value="all">Toutes les catégories</MenuItem>
+            {categories.map((c) => (
+              <MenuItem key={c.id} value={c.id}>
+                {c.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            select
+            label="Trier par"
+            variant="outlined"
+            size="small"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            sx={{ minWidth: 200 }}
+          >
+            <MenuItem value="name">Toues les prix</MenuItem>
+            <MenuItem value="price-asc">Prix croissant</MenuItem>
+            <MenuItem value="price-desc">Prix décroissant</MenuItem>
+          </TextField>
+        </Box>
+      </motion.div>
 
       {/* Liste produits */}
       {loading ? (
-        <Grid container spacing={4}>
-          {[...Array(8)].map((_, i) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: i * 0.1 }}
+            >
               <Skeleton
                 variant="rectangular"
-                height={250}
+                height={320}
                 sx={{ borderRadius: 2 }}
                 animation="wave"
               />
-              <Skeleton variant="text" sx={{ mt: 1 }} animation="wave" />
+              <Skeleton variant="text" sx={{ mt: 2, fontSize: '1.5rem' }} animation="wave" />
               <Skeleton variant="text" width="60%" animation="wave" />
-            </Grid>
+              <Skeleton variant="text" width="40%" animation="wave" />
+            </motion.div>
           ))}
-        </Grid>
+        </motion.div>
       ) : filteredProducts.length > 0 ? (
-        <Grid container spacing={4}>
-          {filteredProducts.map((p) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={p.id} sx={{ display: "flex" }}>
-              <ProductCard product={p} sx={{ flex: 1 }} />
-            </Grid>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          {filteredProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <ProductCard product={product} />
+            </motion.div>
           ))}
-        </Grid>
+        </motion.div>
       ) : (
-        <Typography align="center" color="text.secondary" mt={4}>
-          Aucun produit trouvé.
-        </Typography>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center justify-center py-16 text-center"
+        >
+          <motion.div
+            animate={{
+              y: [0, -10, 0],
+              rotate: [0, -5, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <SearchOffIcon 
+              sx={{ 
+                fontSize: 80, 
+                color: 'text.secondary',
+                mb: 2
+              }} 
+            />
+          </motion.div>
+          
+          <Typography variant="h5" color="text.secondary" gutterBottom>
+            Aucun produit trouvé
+          </Typography>
+          
+          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 400, mb: 3 }}>
+            Essayez de modifier vos critères de recherche ou explorez d'autres catégories.
+          </Typography>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              setSearch("");
+              setFilter("all");
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+          >
+            Réinitialiser les filtres
+          </motion.button>
+
+          <motion.div
+            className="mt-8 opacity-60"
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              Essayez des termes plus génériques ou différentes catégories
+            </Typography>
+          </motion.div>
+        </motion.div>
       )}
     </Box>
   );

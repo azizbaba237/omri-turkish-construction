@@ -70,7 +70,7 @@ export default function ProductCard({ product }) {
         <div className="mt-4 flex flex-col sm:flex-row gap-2">
           <Link
             to={`/products/${product.id}`}
-            className="flex-1 text-center bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg transition"
+            className="lg:py-3 lg:px-2 text-center bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition"
           >
             Voir détails
           </Link>

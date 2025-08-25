@@ -1,8 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000',
-  timeout: 10000
+// URL de ton backend Django
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
+export const api = axios.create({
+  baseURL: API_URL,
 });
 
-export default api;
+export const getProducts = () => api.get("/products/");
+export const getServices = () => api.get("/services/");
+export const getCategories = () => api.get("/categories/");
+export const getProductById = (id) => api.get(`/products/${id}/`);
+export const getProductsByCategory = (categoryId) => api.get(`/products/?category=${categoryId}`);

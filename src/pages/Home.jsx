@@ -71,7 +71,13 @@ const Home = () => {
           color: "white",
         }}
       >
-        <Box sx={{ position: "absolute", inset: 0, backgroundColor: "rgba(0,0,0,0.5)" }} />
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        />
         <Container maxWidth="md" sx={{ position: "relative", zIndex: 2 }}>
           <Typography
             variant="h4"
@@ -115,7 +121,14 @@ const Home = () => {
       </Box>
 
       {/* Promo Banner */}
-      <Box sx={{ backgroundColor: "#f29200", color: "#000", py: 2, textAlign: "center" }}>
+      <Box
+        sx={{
+          backgroundColor: "#f29200",
+          color: "#000",
+          py: 2,
+          textAlign: "center",
+        }}
+      >
         <Typography variant="h6" fontWeight="bold">
           <LocalOfferIcon sx={{ verticalAlign: "middle", mr: 1 }} />
           NB: NOS PRODUITS BENEFICIENT D'UNE GARENTIE D'UN AN
@@ -165,7 +178,9 @@ const Home = () => {
                       margin: "auto",
                     }}
                   >
-                    <Box sx={{ position: "relative", width: "100%", pt: "75%" }}>
+                    <Box
+                      sx={{ position: "relative", width: "100%", pt: "75%" }}
+                    >
                       <CardMedia
                         component="img"
                         image={product.image}
@@ -183,14 +198,33 @@ const Home = () => {
                       />
                     </Box>
 
-                    <CardContent sx={{ flexGrow: 1, px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 3 } }}>
-                      <Typography gutterBottom variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+                    <CardContent
+                      sx={{
+                        flexGrow: 1,
+                        px: { xs: 2, sm: 3 },
+                        py: { xs: 2, sm: 3 },
+                      }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+                      >
                         {product.name}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontSize: { xs: "0.9rem", sm: "1rem" } }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 1, fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                      >
                         {product.short_description}
                       </Typography>
-                      <Typography variant="h6" color="primary" fontWeight="bold" sx={{ fontSize: { xs: "1.1rem", sm: "1.2rem" } }}>
+                      <Typography
+                        variant="h6"
+                        color="primary"
+                        fontWeight="bold"
+                        sx={{ fontSize: { xs: "1.1rem", sm: "1.2rem" } }}
+                      >
                         {product.price} Fcfa
                       </Typography>
                     </CardContent>
@@ -213,8 +247,24 @@ const Home = () => {
         </Grid>
 
         {/* Services Section */}
-        <Box sx={{ backgroundColor: "#f5f5f5", p: { xs: 3, sm: 5 }, borderRadius: 2, mt: 8 }}>
-          <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 4, textAlign: "center", fontSize: { xs: "1.5rem", sm: "2rem" } }}>
+        <Box
+          sx={{
+            backgroundColor: "#f5f5f5",
+            p: { xs: 3, sm: 5 },
+            borderRadius: 2,
+            mt: 8,
+          }}
+        >
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            gutterBottom
+            sx={{
+              mb: 4,
+              textAlign: "center",
+              fontSize: { xs: "1.5rem", sm: "2rem" },
+            }}
+          >
             Nos Prestations de Services
           </Typography>
           <Grid container spacing={3} justifyContent="center">
@@ -236,24 +286,64 @@ const Home = () => {
                 ))
               : services.slice(0, 6).map((service) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
-                    <Card sx={{ display: "flex", flexDirection: "column", height: "100%", maxWidth: 350, margin: "auto" }}>
+                    <Card
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        maxWidth: 350,
+                        margin: "auto",
+                      }}
+                    >
                       {service.images && (
-                        <Box sx={{ position: "relative", width: "100%", pt: "70%" }}>
+                        <Box
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            pt: "70%",
+                          }}
+                        >
                           <CardMedia
                             component="img"
                             image={service.images[0]}
                             alt={service.name}
-                            sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", borderTopLeftRadius: "4px", borderTopRightRadius: "4px" }}
+                            sx={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              borderTopLeftRadius: "4px",
+                              borderTopRightRadius: "4px",
+                            }}
                           />
                         </Box>
                       )}
                       <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography variant="h6" gutterBottom>{service.name}</Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{service.description}</Typography>
-                        {service.price && <Typography variant="h6" color="primary">À partir de {service.price}</Typography>}
+                        <Typography variant="h6" gutterBottom>
+                          {service.name}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ mb: 2 }}
+                        >
+                          {service.description}
+                        </Typography>
+                        {service.price && (
+                          <Typography variant="h6" color="primary">
+                            À partir de {service.price}
+                          </Typography>
+                        )}
                       </CardContent>
                       <Box sx={{ p: 2 }}>
-                        <Button variant="outlined" fullWidth component={Link} to={`/services/${service.id}`}>
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          component={Link}
+                          to={`/services/${service.id}`}
+                        >
                           En savoir plus
                         </Button>
                       </Box>
@@ -263,25 +353,47 @@ const Home = () => {
           </Grid>
 
           <Box sx={{ textAlign: "center", mt: 4 }}>
-            <Button variant="contained" size="large" component={Link} to="/services">
+            <Button
+              variant="contained"
+              size="large"
+              component={Link}
+              to="/services"
+            >
               Voir tous nos services
             </Button>
           </Box>
         </Box>
 
         {/* Témoignages */}
-        <Typography variant="h4" fontWeight="bold" sx={{ mt: 8, mb: 4, textAlign: "center", fontSize: { xs: "1.5rem", sm: "2rem" } }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          sx={{
+            mt: 8,
+            mb: 4,
+            textAlign: "center",
+            fontSize: { xs: "1.5rem", sm: "2rem" },
+          }}
+        >
           Ils nous font confiance
         </Typography>
         {testimonials.length === 0 ? (
-          <Skeleton variant="rectangular" height={180} sx={{ maxWidth: 800, mx: "auto" }} />
+          <Skeleton
+            variant="rectangular"
+            height={180}
+            sx={{ maxWidth: 800, mx: "auto" }}
+          />
         ) : (
           <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", px: 2 }}>
-            <Card sx={{ p: { xs: 3, sm: 4 }, textAlign: "center", boxShadow: 6 }}>
+            <Card
+              sx={{ p: { xs: 3, sm: 4 }, textAlign: "center", boxShadow: 6 }}
+            >
               <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <StarIcon key={i} color="primary" />
-                ))}
+                {[...Array(testimonials[currentTestimonial].rating)].map(
+                  (_, i) => (
+                    <StarIcon key={i} color="primary" />
+                  )
+                )}
               </Box>
               <Typography variant="body1" sx={{ fontStyle: "italic", mb: 2 }}>
                 "{testimonials[currentTestimonial].text}"
@@ -322,20 +434,41 @@ const Home = () => {
       </Container>
 
       {/* Newsletter */}
-      <Box sx={{ backgroundColor: "#1E40AF", color: "white", p: 5, mt: 8, borderRadius: 2 }}>
+      <Box
+        sx={{
+          backgroundColor: "#1E40AF",
+          color: "white",
+          p: 5,
+          mt: 8,
+          borderRadius: 2,
+        }}
+      >
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4" fontWeight="bold" gutterBottom>
               Restez informé
             </Typography>
             <Typography>
-              Abonnez-vous à notre newsletter pour recevoir nos offres exclusives et actualités.
+              Abonnez-vous à notre newsletter pour recevoir nos offres
+              exclusives et actualités.
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box component="form" sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-              <TextField fullWidth variant="outlined" placeholder="Votre email" sx={{ backgroundColor: "white", borderRadius: 1 }} />
-              <Button variant="contained" color="secondary" endIcon={<EmailIcon />}>
+            <Box
+              component="form"
+              sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}
+            >
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Votre email"
+                sx={{ backgroundColor: "white", borderRadius: 1 }}
+              />
+              <Button
+                variant="contained"
+                color="secondary"
+                endIcon={<EmailIcon />}
+              >
                 S'abonner
               </Button>
             </Box>

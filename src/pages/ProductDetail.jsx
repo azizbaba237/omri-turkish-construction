@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
+import { getProductById, getProductsByCategory } from "../services/api";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -14,26 +14,36 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("/db.json")
+    setLoading(true);
+
+    // Récupération du produit depuis l'API Django
+    getProductById(id)
       .then((res) => {
-        const products = res.data.products;
-        const found = products.find((p) => String(p.id) === id);
+        const found = res.data;
         setProduct(found);
 
-        if (found) {
-          const related = products.filter(
-            (p) => p.category === found.category && String(p.id) !== id
-          );
-          setRelatedProducts(related);
+        if (found && found.category) {
+          // Récupération des produits similaires
+          getProductsByCategory(found.category)
+            .then((relatedRes) => {
+              // Gestion de la structure de réponse (results ou array direct)
+              const productsData = relatedRes.data.results || relatedRes.data;
+              const related = productsData.filter((p) => p.id !== found.id);
+              setRelatedProducts(related);
+            })
+            .catch((err) => console.error("Erreur produits similaires:", err));
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Erreur chargement produit:", err))
+      .finally(() => setLoading(false));
   }, [id]);
 
-  if (!product) return <div className="text-center py-10">Chargement...</div>;
+  if (loading) return <div className="text-center py-10">Chargement...</div>;
+  if (!product)
+    return <div className="text-center py-10">Produit non trouvé</div>;
 
   const handleAddToCart = () => {
     if (product.colors && !selectedColor) {
