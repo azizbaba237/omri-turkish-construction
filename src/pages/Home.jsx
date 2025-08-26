@@ -20,30 +20,46 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
+import { getProducts } from "../services/api";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [services, setServices] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingServices, setLoadingServices] = useState(true);
 
   useEffect(() => {
+    setLoadingProducts(true);
+    getProducts()
+      .then((productsRes) => {
+        setProducts(productsRes.data.results || productsRes.data || []);
+      })
+      .catch((err) => console.error("Erreur chargement :", err))
+      .finally(() => setLoadingProducts(false));
+  }, []);
+
+  useEffect(() => {
+    setLoadingServices(true);
     axios
       .get("/db.json")
       .then((res) => {
-        setProducts(res.data.products);
-        setServices(res.data.services);
-        setTestimonials(res.data.testimonials);
+        setServices(res.data.services || []);
+        setTestimonials(res.data.testimonials || []);
       })
-      .catch((err) => console.error("Erreur API:", err));
+      .catch((err) => console.error("Erreur API:", err))
+      .finally(() => setLoadingServices(false));
   }, []);
 
   // Carrousel Témoignages
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    if (testimonials.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
   }, [testimonials.length]);
 
   const nextTestimonial = () =>
@@ -136,7 +152,7 @@ const Home = () => {
       </Box>
 
       {/* Products Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 } }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 4, sm: 6 } }}>
         <Typography
           variant="h4"
           fontWeight="bold"
@@ -149,32 +165,54 @@ const Home = () => {
         >
           Nos Produits Phares
         </Typography>
+
         <Grid container spacing={3} justifyContent="center">
-          {products.length === 0
-            ? [...Array(8)].map((_, i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                  <Card sx={{ maxWidth: 350, margin: "auto" }}>
-                    <Skeleton variant="rectangular" height={200} />
+          {loadingProducts
+            ? [...Array(12)].map((_, i) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} xl={4} key={i}>
+                  <Card sx={{ maxWidth: 350, margin: "auto", height: "100%" }}>
+                    <Skeleton
+                      variant="rectangular"
+                      height={320}
+                      sx={{
+                        borderTopLeftRadius: "4px",
+                        borderTopRightRadius: "4px",
+                      }}
+                    />
                     <CardContent>
                       <Skeleton variant="text" height={30} width="80%" />
-                      <Skeleton variant="text" height={20} width="60%" />
-                      <Skeleton variant="text" height={25} width="40%" />
+                      <Skeleton
+                        variant="text"
+                        height={20}
+                        width="60%"
+                        sx={{ mt: 1 }}
+                      />
+                      <Skeleton
+                        variant="text"
+                        height={25}
+                        width="40%"
+                        sx={{ mt: 1 }}
+                      />
                     </CardContent>
-                    <Box sx={{ p: 2 }}>
-                      <Skeleton variant="rectangular" height={36} />
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Skeleton
+                        variant="rectangular"
+                        height={40}
+                        sx={{ borderRadius: 1 }}
+                      />
                     </Box>
                   </Card>
                 </Grid>
               ))
-            : products.slice(0, 8).map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+            : products.slice(2, 6).map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} xl={4} key={product.id}>
                   <Card
                     className="transition-transform transform hover:scale-105 shadow-lg hover:shadow-2xl"
                     sx={{
                       display: "flex",
                       flexDirection: "column",
                       height: "100%",
-                      maxWidth: 350,
+                      maxWidth: 250,
                       margin: "auto",
                     }}
                   >
@@ -208,14 +246,29 @@ const Home = () => {
                       <Typography
                         gutterBottom
                         variant="h6"
-                        sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+                        sx={{
+                          fontSize: { xs: "1rem", sm: "1.1rem" },
+                          minHeight: "3rem",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
                       >
                         {product.name}
                       </Typography>
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        sx={{ mb: 1, fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                        sx={{
+                          mb: 1,
+                          fontSize: { xs: "0.9rem", sm: "1rem" },
+                          minHeight: "2.5rem",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
                       >
                         {product.short_description}
                       </Typography>
@@ -268,24 +321,55 @@ const Home = () => {
             Nos Prestations de Services
           </Typography>
           <Grid container spacing={3} justifyContent="center">
-            {services.length === 0
+            {loadingServices
               ? [...Array(6)].map((_, i) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                    <Card sx={{ maxWidth: 350, margin: "auto" }}>
-                      <Skeleton variant="rectangular" height={140} />
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={i}>
+                    <Card
+                      sx={{ maxWidth: 350, margin: "auto", height: "100%" }}
+                    >
+                      <Skeleton
+                        variant="rectangular"
+                        height={140}
+                        sx={{
+                          borderTopLeftRadius: "4px",
+                          borderTopRightRadius: "4px",
+                        }}
+                      />
                       <CardContent>
                         <Skeleton variant="text" height={30} width="70%" />
-                        <Skeleton variant="text" height={20} width="90%" />
-                        <Skeleton variant="text" height={25} width="50%" />
+                        <Skeleton
+                          variant="text"
+                          height={20}
+                          width="90%"
+                          sx={{ mt: 1 }}
+                        />
+                        <Skeleton
+                          variant="text"
+                          height={25}
+                          width="50%"
+                          sx={{ mt: 1 }}
+                        />
                       </CardContent>
-                      <Box sx={{ p: 2 }}>
-                        <Skeleton variant="rectangular" height={36} />
+                      <Box sx={{ p: 2, pt: 0 }}>
+                        <Skeleton
+                          variant="rectangular"
+                          height={36}
+                          sx={{ borderRadius: 1 }}
+                        />
                       </Box>
                     </Card>
                   </Grid>
                 ))
               : services.slice(0, 6).map((service) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={service.id}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={4}
+                    xl={3}
+                    key={service.id}
+                  >
                     <Card
                       sx={{
                         display: "flex",
@@ -377,29 +461,32 @@ const Home = () => {
         >
           Ils nous font confiance
         </Typography>
+
         {testimonials.length === 0 ? (
-          <Skeleton
-            variant="rectangular"
-            height={180}
-            sx={{ maxWidth: 800, mx: "auto" }}
-          />
+          <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", px: 2 }}>
+            <Skeleton
+              variant="rectangular"
+              height={180}
+              sx={{ borderRadius: 2 }}
+            />
+          </Box>
         ) : (
           <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", px: 2 }}>
             <Card
               sx={{ p: { xs: 3, sm: 4 }, textAlign: "center", boxShadow: 6 }}
             >
               <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-                {[...Array(testimonials[currentTestimonial].rating)].map(
+                {[...Array(testimonials[currentTestimonial]?.rating || 5)].map(
                   (_, i) => (
                     <StarIcon key={i} color="primary" />
                   )
                 )}
               </Box>
               <Typography variant="body1" sx={{ fontStyle: "italic", mb: 2 }}>
-                "{testimonials[currentTestimonial].text}"
+                "{testimonials[currentTestimonial]?.text}"
               </Typography>
               <Typography fontWeight="bold">
-                - {testimonials[currentTestimonial].name}
+                - {testimonials[currentTestimonial]?.name}
               </Typography>
             </Card>
 
