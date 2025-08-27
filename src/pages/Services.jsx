@@ -10,16 +10,23 @@ import {
   Box,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { getServices } from "../services/api";
 
 const Services = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/db.json")
-      .then((res) => setServices(res.data.services))
-      .catch((err) => console.error("Erreur API:", err));
+    // setLoadingServices(true);
+    getServices()
+      .then((servicesRes) => {
+        setServices(
+          servicesRes.data.results || servicesRes.data || []
+        );
+        console.log(servicesRes.data);
+        
+      })
+      .catch((err) => console.error("Erreur API:", err))
+      //.finally(() => setLoadingServices(false));
   }, []);
 
   return (
@@ -63,8 +70,8 @@ const Services = () => {
               {service.images && service.images.length > 0 && (
                 <CardMedia
                   component="img"
-                  image={service.images[0]}
-                  alt={service.name}
+                  image={service.images[0]?.image}
+                  alt={service.title}
                   sx={{
                     height: 180,
                     objectFit: "cover",
@@ -78,7 +85,7 @@ const Services = () => {
                   color="text.secondary"
                   gutterBottom
                 >
-                  {service.category || "Service"}
+                   {service.category ? service.category.name : "Service"}
                 </Typography>
                 <Typography
                   variant="h6"
@@ -86,7 +93,7 @@ const Services = () => {
                   gutterBottom
                   color="primary"
                 >
-                  {service.name}
+                  {service.title}
                 </Typography>
 
                 <Typography
@@ -102,7 +109,7 @@ const Services = () => {
                   fontWeight="bold"
                   sx={{ mb: 2 }}
                 >
-                  {service.price}
+                  Prix : {service.price}
                 </Typography>
 
                 <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>

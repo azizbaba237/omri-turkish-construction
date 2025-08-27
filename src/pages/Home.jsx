@@ -19,13 +19,12 @@ import StarIcon from "@mui/icons-material/Star";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import axios from "axios";
-import { getProducts } from "../services/api";
+import { getProducts, getServices } from "../services/api";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [services, setServices] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
+  //const [testimonials, setTestimonials] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingServices, setLoadingServices] = useState(true);
 
@@ -39,35 +38,38 @@ const Home = () => {
       .finally(() => setLoadingProducts(false));
   }, []);
 
-  useEffect(() => {
-    setLoadingServices(true);
-    axios
-      .get("/db.json")
-      .then((res) => {
-        setServices(res.data.services || []);
-        setTestimonials(res.data.testimonials || []);
-      })
-      .catch((err) => console.error("Erreur API:", err))
-      .finally(() => setLoadingServices(false));
-  }, []);
+ useEffect(() => {
+  setLoadingServices(true);
+  getServices()
+    .then((servicesRes) => {
+      setServices(
+        servicesRes.data.results || servicesRes.data || []
+      );
+      console.log(servicesRes.data);
+      
+    })
+    .catch((err) => console.error("Erreur API:", err))
+    .finally(() => setLoadingServices(false));
+}, []);
+
 
   // Carrousel Témoignages
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  useEffect(() => {
-    if (testimonials.length > 0) {
-      const timer = setInterval(() => {
-        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-      }, 5000);
-      return () => clearInterval(timer);
-    }
-  }, [testimonials.length]);
+  // const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  // useEffect(() => {
+  //   if (testimonials.length > 0) {
+  //     const timer = setInterval(() => {
+  //       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  //     }, 5000);
+  //     return () => clearInterval(timer);
+  //   }
+  // }, [testimonials.length]);
 
-  const nextTestimonial = () =>
-    setCurrentTestimonial((currentTestimonial + 1) % testimonials.length);
-  const prevTestimonial = () =>
-    setCurrentTestimonial(
-      (currentTestimonial - 1 + testimonials.length) % testimonials.length
-    );
+  // const nextTestimonial = () =>
+  //   setCurrentTestimonial((currentTestimonial + 1) % testimonials.length);
+  // const prevTestimonial = () =>
+  //   setCurrentTestimonial(
+  //     (currentTestimonial - 1 + testimonials.length) % testimonials.length
+  //   );
 
   return (
     <>
@@ -360,7 +362,7 @@ const Home = () => {
                     </Card>
                   </Grid>
                 ))
-              : services.slice(0, 6).map((service) => (
+              : services.slice(0, 3).map((service) => (
                   <Grid
                     item
                     xs={12}
@@ -389,8 +391,8 @@ const Home = () => {
                         >
                           <CardMedia
                             component="img"
-                            image={service.images[0]}
-                            alt={service.name}
+                            image={service.images[0]?.image}
+                            alt={service.title}
                             sx={{
                               position: "absolute",
                               top: 0,
@@ -406,7 +408,7 @@ const Home = () => {
                       )}
                       <CardContent sx={{ flexGrow: 1 }}>
                         <Typography variant="h6" gutterBottom>
-                          {service.name}
+                          {service.title}
                         </Typography>
                         <Typography
                           variant="body2"
@@ -417,7 +419,7 @@ const Home = () => {
                         </Typography>
                         {service.price && (
                           <Typography variant="h6" color="primary">
-                            À partir de {service.price}
+                            Prix : {service.price}
                           </Typography>
                         )}
                       </CardContent>
@@ -462,7 +464,7 @@ const Home = () => {
           Ils nous font confiance
         </Typography>
 
-        {testimonials.length === 0 ? (
+        {/* {testimonials.length === 0 ? (
           <Box sx={{ position: "relative", maxWidth: 800, mx: "auto", px: 2 }}>
             <Skeleton
               variant="rectangular"
@@ -517,7 +519,7 @@ const Home = () => {
               <ArrowForwardIosIcon />
             </IconButton>
           </Box>
-        )}
+        )} */}
       </Container>
 
       {/* Newsletter */}
