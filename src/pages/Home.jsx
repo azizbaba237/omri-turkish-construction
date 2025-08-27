@@ -206,7 +206,7 @@ const Home = () => {
                   </Card>
                 </Grid>
               ))
-            : products.slice(0, 6).map((product) => (
+            : products.slice(0, 4).map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={4} xl={4} key={product.id}>
                   <Card
                     className="transition-transform transform hover:scale-105 shadow-lg hover:shadow-2xl"
