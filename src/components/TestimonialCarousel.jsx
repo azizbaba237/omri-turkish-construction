@@ -3,6 +3,8 @@ import { Box, Card, Typography, IconButton, Skeleton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { getTestimonials } from "../services/api";
+
 
 const TestimonialCarousel = () => {
   // State : liste des témoignages et index du témoignage actuel
@@ -11,9 +13,8 @@ const TestimonialCarousel = () => {
 
   // Chargement des témoignages depuis db.json
   useEffect(() => {
-    fetch("/db.json")
-      .then((res) => res.json())
-      .then((data) => setTestimonials(data.testimonials || []))
+    getTestimonials()
+      .then((res)  => setTestimonials(res.data.results || res.data || []))
       .catch((err) => console.error("Erreur testimonials :", err));
   }, []);
 

@@ -14,4 +14,5 @@ export const getProducts = () => api.get("/products/");
 export const getServices = () => api.get("/services/");
 export const getCategories = () => api.get("/categories/");
 export const getProductById = (id) => api.get(`/products/${id}/`);
+export const getTestimonials = () => api.get("/testimonials/");
 export const getProductsByCategory = (categoryId) => api.get(`/products/?category=${categoryId}`);
