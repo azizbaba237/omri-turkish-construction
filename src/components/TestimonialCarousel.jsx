@@ -11,7 +11,7 @@ const TestimonialCarousel = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [current, setCurrent] = useState(0);
 
-  // Chargement des témoignages depuis db.json
+  // Chargement des témoignages depuis de bd 
   useEffect(() => {
     getTestimonials()
       .then((res)  => setTestimonials(res.data.results || res.data || []))
