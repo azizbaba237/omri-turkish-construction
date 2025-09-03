@@ -6,12 +6,12 @@ import { Container, Typography, Box, Button } from "@mui/material";
 import { getProducts, getServices } from "../services/api";
 
 // Import des composants de la page d'accueil
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import HeroSection from "../components/HeroSection";
-import PromoBanner from "../components/PromoBanner";
-import ProductGrid from "../components/ProductGrid";
-import ServiceGrid from "../components/ServiceGrid";
-import Newsletter from "../components/Newsletter";
+import TestimonialCarousel from "../components/home/TestimonialCarousel";
+import HeroSection from "../components/home/HeroSection";
+import PromoBanner from "../components/home/PromoBanner";
+import ProductGrid from "../components/home/ProductGrid";
+import ServiceGrid from "../components/home/ServiceGrid";
+import Newsletter from "../components/home/Newsletter";
 
 const Home = () => {
   // --- États pour stocker les produits et services ---

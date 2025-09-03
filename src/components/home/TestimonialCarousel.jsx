@@ -3,7 +3,7 @@ import { Box, Card, Typography, IconButton, Skeleton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { getTestimonials } from "../services/api";
+import { getTestimonials } from "../../services/api";
 
 
 const TestimonialCarousel = () => {

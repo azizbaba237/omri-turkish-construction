@@ -41,8 +41,8 @@ const Navbar = () => {
     { text: "Accueil", path: "/" },
     { text: "Produits", path: "/products" },
     { text: "Services", path: "/services" },
-    { text: "Contact", path: "/contact" },
     { text: "À propos", path: "/about" },
+    { text: "Contact", path: "/contact" },
   ];
 
   const drawer = (

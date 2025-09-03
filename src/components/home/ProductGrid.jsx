@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Box, Skeleton } from "@mui/material";
-import ProductCard from "./ProductCard";
+import ProductCard from "../ProductCard";
 
 const ProductGrid = ({ products = [], loading = false }) => {
   const skeletons = [...Array(3)]; // on garde 3 skeletons max
