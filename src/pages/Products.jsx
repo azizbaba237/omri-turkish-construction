@@ -32,6 +32,16 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    // Récupérer la recherche depuis localStorage
+    const savedSearch = localStorage.getItem("productSearch");
+    if (savedSearch) {
+      setSearch(savedSearch);
+      // Nettoyer après utilisation
+      localStorage.removeItem("productSearch");
+    }
+  }, []);
+
   // Appliquer recherche, filtre et tri
   const filteredProducts = products
     .filter((p) => p.name?.toLowerCase().includes(search.toLowerCase()))

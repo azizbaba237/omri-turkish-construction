@@ -34,7 +34,12 @@ const Navbar = () => {
   const handleClose = () => setAnchorEl(null);
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Recherche:", searchTerm);
+    if (searchTerm.trim()) {
+      // Sauvegarder la recherche
+      localStorage.setItem("productSearch", searchTerm);
+      // Rediriger vers la page produits
+      window.location.href = "/products";
+    }
   };
 
   const navItems = [
@@ -104,6 +109,31 @@ const Navbar = () => {
             OMRI TURKISH
           </Typography>
 
+          {/* Menu Desktop */}
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: 1.5,
+            }}
+          >
+            {navItems.map((item) => (
+              <Button
+                key={item.text}
+                component={Link}
+                to={item.path}
+                sx={{
+                  color: "white",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+                }}
+              >
+                {item.text}
+              </Button>
+            ))}
+          </Box>
+
           {/* Barre de recherche */}
           <Box
             component="form"
@@ -128,32 +158,26 @@ const Navbar = () => {
             </IconButton>
           </Box>
 
-          {/* Menu Desktop */}
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-              gap: 1.5,
-            }}
-          >
-            {navItems.map((item) => (
-              <Button
-                key={item.text}
-                component={Link}
-                to={item.path}
-                sx={{
-                  color: "white",
-                  textTransform: "none",
-                  fontSize: "16px",
-                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
-                }}
-              >
-                {item.text}
-              </Button>
-            ))}
+          {/* Panier + Profil + Menu mobile */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* Panier visible sur tous les écrans */}
+            <IconButton
+              color="inherit"
+              component={Link}
+              to="/cart"
+              sx={{ display: "block" }}
+            >
+              <Badge id="cart-badge" badgeContent={cartCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
-            {/* Profil */}
-            <IconButton color="inherit" onClick={handleMenu}>
+            {/* Profil - visible uniquement sur grand écran */}
+            <IconButton
+              color="inherit"
+              onClick={handleMenu}
+              sx={{ display: { xs: "none", md: "block" } }}
+            >
               <AccountCircle />
             </IconButton>
             <Menu
@@ -169,21 +193,6 @@ const Navbar = () => {
               </MenuItem>
               <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
             </Menu>
-          </Box>
-
-          {/* Panier + Menu mobile */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {/* Panier visible sur tous les écrans */}
-            <IconButton
-              color="inherit"
-              component={Link}
-              to="/cart"
-              sx={{ display: "block" }}
-            >
-              <Badge id="cart-badge" badgeContent={cartCount} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
 
             {/* Menu mobile */}
             <IconButton
