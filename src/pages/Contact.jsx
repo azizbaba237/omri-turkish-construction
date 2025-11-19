@@ -8,13 +8,10 @@ import {
   Grid,
   Paper,
   Link,
-  Divider,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,17 +20,41 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Ici tu peux ajouter l'envoi via API ou Email
-    console.log(formData);
-    alert("Message envoyé !");
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/contact/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        setError(err?.message || "Erreur lors de l'envoi");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess("Message envoyé avec succès !");
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      setError("Erreur de connexion au serveur.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +70,7 @@ const Contact = () => {
 
       <Grid container spacing={4} justifyContent="center">
         {/* Formulaire */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={5}>
           <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
             <Box
               component="form"
@@ -97,30 +118,26 @@ const Contact = () => {
                 onChange={handleChange}
               />
 
-              <Button variant="contained" color="primary" size="large" type="submit">
-                Envoyer
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Envoi..." : "Envoyer"}
               </Button>
 
-              <Divider sx={{ my: 2 }}>OU</Divider>
-
-              {/* Connexion Google / Facebook */}
-              <Button
-                variant="outlined"
-                startIcon={<GoogleIcon />}
-                fullWidth
-                sx={{ mb: 1 }}
-                onClick={() => alert("Connexion Google")}
-              >
-                Se connecter avec Google
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<FacebookIcon />}
-                fullWidth
-                onClick={() => alert("Connexion Facebook")}
-              >
-                Se connecter avec Facebook
-              </Button>
+              {success && (
+                <Typography color="success.main" mt={2}>
+                  {success}
+                </Typography>
+              )}
+              {error && (
+                <Typography color="error.main" mt={2}>
+                  {error}
+                </Typography>
+              )}
             </Box>
           </Paper>
         </Grid>
@@ -148,7 +165,6 @@ const Contact = () => {
               <Typography>Douala, Cameroun</Typography>
             </Box>
 
-            {/* Carte Google Maps */}
             <Box sx={{ mt: 3 }}>
               <iframe
                 title="location"

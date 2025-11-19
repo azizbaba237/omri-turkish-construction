@@ -4,7 +4,7 @@ import ProductCard from "../ProductCard";
 
 const ProductGrid = ({ products = [], loading = false }) => {
   const skeletons = [...Array(3)]; // on garde 3 skeletons max
-  const displayProducts = products.slice(0, 3); // ⚡ garder max 3 produits visibles
+  const displayProducts = products.slice(1, 4); // ⚡ garder max 3 produits visibles
 
   return (
     <Box sx={{ py: { xs: 4, sm: 6 } }}>

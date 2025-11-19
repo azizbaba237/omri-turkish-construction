@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { getProducts, getCategories } from "../services/api";
 import { Box, Typography } from "@mui/material";
@@ -9,9 +10,6 @@ import ProductFilters from "../components/products/ProductFilters";
 import ProductSkeletonGrid from "../components/products/ProductSkeletonGrid";
 import EmptyState from "../components/products/EmptyState";
 
-/**
- * Page Produits
- */
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -19,6 +17,8 @@ export default function Products() {
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("name");
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   // Charger produits + catégories au montage
   useEffect(() => {
@@ -33,11 +33,9 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
-    // Récupérer la recherche depuis localStorage
     const savedSearch = localStorage.getItem("productSearch");
     if (savedSearch) {
       setSearch(savedSearch);
-      // Nettoyer après utilisation
       localStorage.removeItem("productSearch");
     }
   }, []);
@@ -45,10 +43,7 @@ export default function Products() {
   // Appliquer recherche, filtre et tri
   const filteredProducts = products
     .filter((p) => p.name?.toLowerCase().includes(search.toLowerCase()))
-    .filter((p) => {
-      if (filter === "all") return true;
-      return String(p.category?.id) === String(filter);
-    })
+    .filter((p) => (filter === "all" ? true : String(p.category?.id) === String(filter)))
     .sort((a, b) => {
       const priceA = parseFloat(a.price) || 0;
       const priceB = parseFloat(b.price) || 0;
@@ -58,9 +53,14 @@ export default function Products() {
       return 0;
     });
 
+  // Naviguer vers le détail produit avec le nom dans l'URL
+  const goToProductDetail = (product) => {
+    const encodedName = encodeURIComponent(product.name.toLowerCase().replace(/\s+/g, "-"));
+    navigate(`/products/${encodedName}`, { state: { product } });
+  };
+
   return (
     <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
-      {/* Titre et sous-titre */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -69,17 +69,11 @@ export default function Products() {
         <Typography variant="h3" align="center" fontWeight="bold" gutterBottom>
           Nos Produits
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          gutterBottom
-        >
+        <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom>
           Découvrez notre sélection de produits sanitaires de qualité.
         </Typography>
       </motion.div>
 
-      {/* Barre de recherche + filtres */}
       <ProductFilters
         search={search}
         setSearch={setSearch}
@@ -90,7 +84,6 @@ export default function Products() {
         categories={categories}
       />
 
-      {/* Liste produits */}
       {loading ? (
         <ProductSkeletonGrid />
       ) : filteredProducts.length > 0 ? (
@@ -107,6 +100,8 @@ export default function Products() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              className="cursor-pointer"
+              onClick={() => goToProductDetail(product)}
             >
               <ProductCard product={product} />
             </motion.div>

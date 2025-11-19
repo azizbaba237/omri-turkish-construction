@@ -177,16 +177,6 @@ export default function CheckoutPage() {
                     <input
                       type="radio"
                       name="payment"
-                      value="card"
-                      checked={formData.payment === "card"}
-                      onChange={handleChange}
-                    />
-                    <span>Carte bancaire</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="payment"
                       value="mobile"
                       checked={formData.payment === "mobile"}
                       onChange={handleChange}

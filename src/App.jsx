@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
 import ServiceDetail from "./pages/ServiceDetail";
+import Register from './pages/Register';
 
 
 export default function App() {
@@ -23,11 +24,12 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/products/:name" element={<ProductDetail />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />

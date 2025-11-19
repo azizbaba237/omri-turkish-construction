@@ -106,7 +106,7 @@ const Navbar = () => {
               letterSpacing: 1,
             }}
           >
-            OMRI TURKISH
+            OMRI TURKISH CONSTRUCTION
           </Typography>
 
           {/* Menu Desktop */}
@@ -190,6 +190,9 @@ const Navbar = () => {
               </MenuItem>
               <MenuItem component={Link} to="/login" onClick={handleClose}>
                 Connexion
+              </MenuItem>
+              <MenuItem component={Link} to="/register" onClick={handleClose}>
+                S'inscrire
               </MenuItem>
               <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
             </Menu>

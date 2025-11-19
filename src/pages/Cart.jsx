@@ -290,7 +290,7 @@ const Cart = () => {
                   <Typography variant="body2">Livraison:</Typography>
                   <Typography variant="body2" className="font-medium">
                     {shippingCost === 0 ? (
-                      <span className="text-green-600">Gratuite</span>
+                      <span className="text-green-600">Négociable</span>
                     ) : (
                       `${shippingCost}€`
                     )}
@@ -299,7 +299,7 @@ const Cart = () => {
 
                 {shippingCost === 0 && cartTotal > 0 && (
                   <Typography variant="caption" className="text-green-600 block text-right">
-                    ✓ Livraison offerte
+                    ✓ Livraison possible
                   </Typography>
                 )}
 
