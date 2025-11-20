@@ -19,7 +19,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
@@ -29,15 +29,37 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [elevated, setElevated] = useState(false);
 
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // 🟦 Vérifier la connexion
+  useEffect(() => {
+    const access = localStorage.getItem("access");
+    const userStored = localStorage.getItem("user");
+
+    if (access && userStored) {
+      setUser(JSON.parse(userStored));
+    } else {
+      setUser(null);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
+
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      // Sauvegarder la recherche
       localStorage.setItem("productSearch", searchTerm);
-      // Rediriger vers la page produits
       window.location.href = "/products";
     }
   };
@@ -50,6 +72,7 @@ const Navbar = () => {
     { text: "Contact", path: "/contact" },
   ];
 
+  // 🟦 Drawer mobile (design 100% gardé)
   const drawer = (
     <Box sx={{ width: 250 }} onClick={handleDrawerToggle}>
       <List>
@@ -58,24 +81,41 @@ const Navbar = () => {
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
+
         <ListItem button component={Link} to="/cart">
           <ShoppingCartIcon className="mr-2" /> Panier ({cartCount})
         </ListItem>
-        <ListItem button component={Link} to="/profile">
-          Profil
-        </ListItem>
-        <ListItem button component={Link} to="/login">
-          Connexion
-        </ListItem>
+
+        {/* 🔥 Menu dynamique mobile */}
+        {!user && (
+          <>
+            <ListItem button component={Link} to="/login">
+              Connexion
+            </ListItem>
+            <ListItem button component={Link} to="/register">
+              S'inscrire
+            </ListItem>
+          </>
+        )}
+
+        {user && (
+          <>
+            <ListItem button component={Link} to="/profile">
+              Profil
+            </ListItem>
+            <ListItem button onClick={handleLogout}>
+              Déconnexion
+            </ListItem>
+          </>
+        )}
       </List>
     </Box>
   );
 
-  // Shadow dynamique au scroll
+  // 🟦 Shadow dynamique
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) setElevated(true);
-      else setElevated(false);
+      setElevated(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -160,7 +200,7 @@ const Navbar = () => {
 
           {/* Panier + Profil + Menu mobile */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {/* Panier visible sur tous les écrans */}
+            {/* Panier visible partout */}
             <IconButton
               color="inherit"
               component={Link}
@@ -172,7 +212,7 @@ const Navbar = () => {
               </Badge>
             </IconButton>
 
-            {/* Profil - visible uniquement sur grand écran */}
+            {/* Profil Desktop */}
             <IconButton
               color="inherit"
               onClick={handleMenu}
@@ -180,21 +220,45 @@ const Navbar = () => {
             >
               <AccountCircle />
             </IconButton>
+
+            {/* Menu Desktop dynamique */}
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem component={Link} to="/profile" onClick={handleClose}>
-                Mon profil
-              </MenuItem>
-              <MenuItem component={Link} to="/login" onClick={handleClose}>
-                Connexion
-              </MenuItem>
-              <MenuItem component={Link} to="/register" onClick={handleClose}>
-                S'inscrire
-              </MenuItem>
-              <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+              {user ? (
+                <>
+                  <MenuItem
+                    component={Link}
+                    to="/profile"
+                    onClick={handleClose}
+                  >
+                    Mon profil
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleLogout();
+                      handleClose();
+                    }}
+                  >
+                    Déconnexion
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem component={Link} to="/login" onClick={handleClose}>
+                    Connexion
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/register"
+                    onClick={handleClose}
+                  >
+                    S'inscrire
+                  </MenuItem>
+                </>
+              )}
             </Menu>
 
             {/* Menu mobile */}
@@ -210,7 +274,6 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer mobile */}
       <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle}>
         {drawer}
       </Drawer>

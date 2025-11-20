@@ -22,6 +22,7 @@ const Register = () => {
     }
 
     try {
+      // Appel à l'API pour créer le compte
       const data = await registerUser({
         username,
         email,
@@ -31,7 +32,26 @@ const Register = () => {
         last_name: lastName,
         phone,
       });
-      setMsg("Compte créé avec succès — connecte-toi maintenant !");
+
+      // Sauvegarde des tokens reçus
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
+
+      // Récupération du profil utilisateur
+      const response = await fetch("http://127.0.0.1:8000/api/auth/profile/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.access}`,
+        },
+      });
+
+      const profile = await response.json();
+
+      // Sauvegarde du profil
+      localStorage.setItem("user", JSON.stringify(profile));
+
+      // Redirection vers l’accueil
+      window.location.href = "/";
     } catch (err) {
       if (err.response?.data) {
         setMsg(JSON.stringify(err.response.data, null, 2));
@@ -46,21 +66,68 @@ const Register = () => {
   return (
     <Box className="flex justify-center items-center min-h-screen bg-gray-100">
       <Paper className="p-8 w-full max-w-md">
-        <Typography variant="h5" className="mb-6 font-bold text-center text-blue-900">
+        <Typography
+          variant="h5"
+          className="mb-6 font-bold text-center text-blue-900"
+        >
           Inscription
         </Typography>
 
         {msg && <p className="text-center mb-3 text-red-600">{msg}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <TextField fullWidth label="Nom d'utilisateur" value={username} onChange={(e) => setUsername(e.target.value)} required />
-          <TextField fullWidth label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <TextField fullWidth label="Prénom" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-          <TextField fullWidth label="Nom" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-          <TextField fullWidth label="Téléphone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <TextField fullWidth label="Mot de passe" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <TextField fullWidth label="Confirmer le mot de passe" type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} required />
-          <Button type="submit" variant="contained" color="primary" fullWidth>S'inscrire</Button>
+          <TextField
+            fullWidth
+            label="Nom d'utilisateur"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Prénom"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Nom"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Téléphone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Mot de passe"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <TextField
+            fullWidth
+            label="Confirmer le mot de passe"
+            type="password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            required
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            S'inscrire
+          </Button>
         </form>
       </Paper>
     </Box>
