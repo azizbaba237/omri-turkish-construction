@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Paper } from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
 import { registerUser } from "../services/api";
 
 const Register = () => {
@@ -22,7 +23,6 @@ const Register = () => {
     }
 
     try {
-      // Appel à l'API pour créer le compte
       const data = await registerUser({
         username,
         email,
@@ -32,26 +32,7 @@ const Register = () => {
         last_name: lastName,
         phone,
       });
-
-      // Sauvegarde des tokens reçus
-      localStorage.setItem("access", data.access);
-      localStorage.setItem("refresh", data.refresh);
-
-      // Récupération du profil utilisateur
-      const response = await fetch("http://127.0.0.1:8000/api/auth/profile/", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${data.access}`,
-        },
-      });
-
-      const profile = await response.json();
-
-      // Sauvegarde du profil
-      localStorage.setItem("user", JSON.stringify(profile));
-
-      // Redirection vers l’accueil
-      window.location.href = "/";
+      setMsg("Compte créé avec succès — connecte-toi maintenant !");
     } catch (err) {
       if (err.response?.data) {
         setMsg(JSON.stringify(err.response.data, null, 2));
@@ -61,6 +42,12 @@ const Register = () => {
         console.error(err);
       }
     }
+  };
+
+  const handleGoogleSignup = () => {
+    // Redirection vers ton backend Django pour OAuth Google
+    window.location.href =
+      "http://127.0.0.1:8000/api/auth/social/login/google/";
   };
 
   return (
@@ -129,6 +116,18 @@ const Register = () => {
             S'inscrire
           </Button>
         </form>
+
+        {/* Bouton Google */}
+        <Box className="flex flex-col space-y-4 mt-4">
+          <Button
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+            fullWidth
+            onClick={handleGoogleSignup}
+          >
+            S'inscrire avec Google
+          </Button>
+        </Box>
       </Paper>
     </Box>
   );
