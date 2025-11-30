@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React, { useState, useEffect, useContext } from "react";
 import {
   AppBar,
@@ -19,7 +20,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
@@ -31,9 +32,10 @@ const Navbar = () => {
 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // 🔥 Pour détecter les changements de route
 
-  // 🟦 Vérifier la connexion
-  useEffect(() => {
+  // ⚡ Vérifier si l'utilisateur est connecté
+  const checkAuthStatus = () => {
     const access = localStorage.getItem("access");
     const userStored = localStorage.getItem("user");
 
@@ -42,6 +44,29 @@ const Navbar = () => {
     } else {
       setUser(null);
     }
+  };
+
+  // 🔥 Vérifier au montage ET à chaque changement de route
+  useEffect(() => {
+    checkAuthStatus();
+  }, [location.pathname]); // Se déclenche à chaque changement d'URL
+
+  // 🔥 Écouter les changements de localStorage (optionnel mais recommandé)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      checkAuthStatus();
+    };
+
+    // Écouter l'événement storage (pour les autres onglets)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Polling léger pour détecter les changements dans le même onglet
+    const interval = setInterval(checkAuthStatus, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -60,7 +85,7 @@ const Navbar = () => {
     e.preventDefault();
     if (searchTerm.trim()) {
       localStorage.setItem("productSearch", searchTerm);
-      window.location.href = "/products";
+      navigate("/products"); // ✅ Utiliser navigate au lieu de window.location
     }
   };
 
@@ -72,7 +97,7 @@ const Navbar = () => {
     { text: "Contact", path: "/contact" },
   ];
 
-  // 🟦 Drawer mobile (design 100% gardé)
+  // Drawer mobile
   const drawer = (
     <Box sx={{ width: 250 }} onClick={handleDrawerToggle}>
       <List>
@@ -86,7 +111,6 @@ const Navbar = () => {
           <ShoppingCartIcon className="mr-2" /> Panier ({cartCount})
         </ListItem>
 
-        {/* 🔥 Menu dynamique mobile */}
         {!user && (
           <>
             <ListItem button component={Link} to="/login">
@@ -112,11 +136,9 @@ const Navbar = () => {
     </Box>
   );
 
-  // 🟦 Shadow dynamique
+  // Shadow dynamique au scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setElevated(window.scrollY > 50);
-    };
+    const handleScroll = () => setElevated(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -200,7 +222,6 @@ const Navbar = () => {
 
           {/* Panier + Profil + Menu mobile */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {/* Panier visible partout */}
             <IconButton
               color="inherit"
               component={Link}
@@ -274,6 +295,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
+      {/* Drawer mobile */}
       <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle}>
         {drawer}
       </Drawer>
